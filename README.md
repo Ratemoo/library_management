@@ -7,8 +7,10 @@ The library management system is a Command-Line Interface (CLI) application buil
 ## Features
 1. Create, delete and view authors
 2. Create, delete and view books
-3. Find authors and books by ID
-4. List all authors and books in the library
+3. Create, delete and list editions of books
+4. Find authors, books and editions by ID
+5. List all authors, books and editions in the library
+6. Manage data with an SQLite database using SQLAlchemy
 ## View
 1. First clone the repository
 2. Set up a virtual environment - pipenv install
