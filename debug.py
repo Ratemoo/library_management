@@ -1,6 +1,7 @@
 from models.base import SessionLocal
 from models.book import Book
 from models.author import Author
+from models.edition import Edition
 
 def test_database():
     session = SessionLocal()
@@ -25,8 +26,8 @@ def test_database():
 
         # Test adding books
         print("\nAdding books...")
-        book1 = Book.create("Book One", author1.id, 2021)  # Added publication_year
-        book2 = Book.create("Book Two", author2.id, 2022)  # Added publication_year
+        book1 = Book.create("Book One", author1.id, 2021)
+        book2 = Book.create("Book Two", author2.id, 2022)
         print(f"Added books: {book1.title}, {book2.title}")
 
         # Test listing books
@@ -40,18 +41,38 @@ def test_database():
         found_book = Book.find_by_id(book1.id)
         print(f"Found book: {found_book.title}, Author ID: {found_book.author_id}, Year: {found_book.publication_year}")
 
-        # Test deleting books and authors
-        print("\nDeleting books and authors...")
+        # Test adding editions
+        print("\nAdding editions...")
+        edition1 = Edition.create(book1.id, 1, "978-3-16-148410-0")
+        edition2 = Edition.create(book2.id, 1, "978-3-16-148411-7")
+        print(f"Added editions: {edition1}, {edition2}")
+
+        # Test listing editions
+        print("\nListing editions...")
+        editions = Edition.get_all()
+        for edition in editions:
+            print(f"{edition.id}: Book ID: {edition.book_id}, Edition Number: {edition.edition_number}, ISBN: {edition.isbn}")
+
+        # Test finding edition by ID
+        print("\nFinding edition by ID...")
+        found_edition = Edition.find_by_id(edition1.id)
+        print(f"Found edition: Book ID: {found_edition.book_id}, Edition Number: {found_edition.edition_number}, ISBN: {found_edition.isbn}")
+
+        # Test deleting editions, books, and authors
+        print("\nDeleting editions, books, and authors...")
+        Edition.delete(edition1.id)
         Book.delete(book1.id)
         Author.delete(author1.id)
-        print(f"Deleted book with ID {book1.id} and author with ID {author1.id}")
+        print(f"Deleted edition with ID {edition1.id}, book with ID {book1.id}, and author with ID {author1.id}")
 
         # Final listing to confirm deletions
-        print("\nFinal listing of authors and books...")
+        print("\nFinal listing of authors, books, and editions...")
         authors = Author.get_all()
         books = Book.get_all()
+        editions = Edition.get_all()
         print(f"Authors: {authors}")
         print(f"Books: {books}")
+        print(f"Editions: {editions}")
 
     except Exception as e:
         print(f"Error occurred: {e}")
